@@ -27,6 +27,7 @@ $(document).ready(function() {
 			tdDate.find('a').attr('title', 'N\u00E3o \u00E9 possivel editar o ponto no mesmo dia!');
 
 			tdDate.find('a').click(function(evt) {
+				alert('N\u00E3o \u00E9 possivel editar o ponto no mesmo dia!');
 				if (!(count >= 3)) {
 					evt.preventDefault();
 					count++;

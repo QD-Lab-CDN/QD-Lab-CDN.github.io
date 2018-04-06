@@ -42,7 +42,16 @@ var qdTexts = {
             "itemsPerPage": "Items per page",
             "totalItems": "Items Total",
             "totalDiscounts": "Discounts Total",
-            "totalFreight": "Freight Total"
+            "totalFreight": "Freight Total",
+            "newPrice": "New Price",
+            "legacy": "Legacy",
+            "kitIncludedProducts": "Products included in this Kit",
+            "kitDetails": "Kit Details",
+            "kitMoreDetails": "To view more details about each product, open the link below",
+            "viewProduct": "View product",
+            "inStockProduct": "Product in stock",
+            "noStockProduct": "Product without stock",
+            "addToCart": "Add this SKU to cart"
         }
     },
     "en-US": {
@@ -88,7 +97,16 @@ var qdTexts = {
             "itemsPerPage": "Items per page",
             "totalItems": "Items Total",
             "totalDiscounts": "Discounts Total",
-            "totalFreight": "Freight Total"
+            "totalFreight": "Freight Total",
+            "newPrice": "New Price",
+            "legacy": "Legacy",
+            "kitIncludedProducts": "Products included in this Kit",
+            "kitDetails": "Kit Details",
+            "kitMoreDetails": "To view more details about each product, open the link below",
+            "viewProduct": "View product",
+            "inStockProduct": "Product in stock",
+            "noStockProduct": "Product without stock",
+            "addToCart": "Add this SKU to cart"
         }
     },
     "pt": {
@@ -134,7 +152,16 @@ var qdTexts = {
             "itemsPerPage": "Items per page",
             "totalItems": "Total dos Itens",
             "totalDiscounts": "Total dos Descontos",
-            "totalFreight": "Total do Frete"
+            "totalFreight": "Total do Frete",
+            "newPrice": "Novo Price",
+            "legacy": "Legado",
+            "kitIncludedProducts": "Produtos que compôem este Kit",
+            "kitDetails": "Detalhes do Kit",
+            "kitMoreDetails": "Para ver mais detalhes de cada produto, abre seu link abaixo",
+            "viewProduct": "Ver produto",
+            "inStockProduct": "Produto com estoque",
+            "noStockProduct": "Produto sem estoque",
+            "addToCart": "Adicionar este SKU ao carrinho"
         }
     },
     "pt-BR": {
@@ -180,7 +207,14 @@ var qdTexts = {
             "itemsPerPage": "Items per page",
             "totalItems": "Total dos Itens",
             "totalDiscounts": "Total dos Descontos",
-            "totalFreight": "Total do Frete"
+            "totalFreight": "Total do Frete",
+            "kitIncludedProducts": "Produtos que compôem este Kit",
+            "kitDetails": "Detalhes do Kit",
+            "kitMoreDetails": "Para ver mais detalhes de cada produto, abre seu link abaixo",
+            "viewProduct": "Ver produto",
+            "inStockProduct": "Produto com estoque",
+            "noStockProduct": "Produto sem estoque",
+            "addToCart": "Adicionar este SKU ao carrinho"
         }
     }
 };

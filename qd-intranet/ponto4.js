@@ -64,7 +64,7 @@ $(document).ready(function() {
 		// first row needs to be headers
 		var headers = [];
 		for (var i=0; i<table.rows[0].cells.length; i++) {
-			headers[i] = $(table.rows[0].cells[i]).text().toLowerCase().replace(" ", "_").replace("í", "i");
+			headers[i] = $(table.rows[0].cells[i]).text().toLowerCase().replace(" ", "_");
 		}
 		// go through cells
 		for (var i=2; i<table.rows.length; i++) {

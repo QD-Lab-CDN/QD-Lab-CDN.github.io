@@ -136,10 +136,23 @@ $(document).ready(function() {
 		return times % 2;
 	}
 
-	function printFinalTime(time) {
-		$('<div class="horaSaida" style="width: auto;padding: 0 10px;border: 1px solid black;right: 30%;top: 50%;position: fixed;box-shadow: 3px 3px 5px gray;"></div>').insertAfter($('table.GridListagem'));
-		$('.horaSaida').prepend('<h1 style="border-bottom:1px solid black">Horario ideal de saida<h1><h2 style="text-align:center;"></h2>');
-		$('.horaSaida h2').text(time);
+	function printFinalTime(time, lastDay) {
+		// $('<div class="horaSaida" style="width: auto;padding: 0 10px;border: 1px solid black;right: 30%;top: 50%;position: fixed;box-shadow: 3px 3px 5px gray;"></div>').insertAfter($('table.GridListagem'));
+		// $('.horaSaida').prepend('<h1 style="border-bottom:1px solid black">Horario ideal de saida<h1><h2 style="text-align:center;"></h2>');
+		// $('.horaSaida h2').text(time);
+
+		var lastLineCells = $('table.GridListagem')[0].rows[lastDay].cells;
+		for(var k = lastLineCells.length - 1; k > 0; k--) {
+			if(!$(lastLineCells[k]).text().trim()) {
+				$(lastLineCells[k]).text(time).css({
+					'border': '2px #212121 dotted',
+					'font-style': 'italic',
+					'text-align': 'center',
+					'background': '#ffe082'
+				}).attr('title', 'Esta é apenas uma informação de sugestão do horário ideal de saída para que você fique com o Banco zerado.');
+				break;
+			}
+		}
 	}
 
 	function calculateFinalTime() {
@@ -170,7 +183,7 @@ $(document).ready(function() {
 			if(signal == '+')
 				saldo = operateTimes(operateTimes('08:00', saldoDay, false), saldo, false);
 			 
-			printFinalTime(operateTimes(lastEnt, saldo, true));
+			printFinalTime(operateTimes(lastEnt, saldo, true), lastDay+2);
 		}
 	}
 

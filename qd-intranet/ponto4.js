@@ -130,9 +130,11 @@ $(document).ready(function() {
 		for(var i = 1; i < 6; i++) {
 			if(day['ent._' + i])
 				times++;
-			if(day['saí._' + i])
+			if(day['saÃ­._' + i])
 				times++;
 		}
+		console.log(day);
+		console.log(times);
 		return times % 2;
 	}
 
@@ -167,16 +169,16 @@ $(document).ready(function() {
 		var signal = saldo.charAt(0);
 		saldo =  saldo.slice(1);
 		var lastDay = data.length-1;
-		// Verifica se está somente faltanto o horário de saída
+		// Verifica se estÃ¡ somente faltanto o horÃ¡rio de saÃ­da
 		if(isEvenTimes(data[data.length-1])) {
 			var saldoDay = '00:00';
 			var lastEnt = '09:00';
 			for(n=1; n<6; n++) {
 				if(data[lastDay]['ent._' + n]) {
 					lastEnt = data[lastDay]['ent._' + n];
-					if(data[lastDay]['saí._' + n]) {
-						lastEnt = data[lastDay]['saí._' + n];
-						saldoDay = operateTimes(saldoDay, operateTimes(data[lastDay]['saí._' + n], data[lastDay]['ent._' + n], false), true);
+					if(data[lastDay]['saÃ­._' + n]) {
+						lastEnt = data[lastDay]['saÃ­._' + n];
+						saldoDay = operateTimes(saldoDay, operateTimes(data[lastDay]['saÃ­._' + n], data[lastDay]['ent._' + n], false), true);
 					}
 				}
 			}	

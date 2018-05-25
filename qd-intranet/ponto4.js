@@ -130,7 +130,7 @@ $(document).ready(function() {
 		for(var i = 1; i < 6; i++) {
 			if(day['ent._' + i])
 				times++;
-			if(day['sai._' + i])
+			if(day['saí._' + i])
 				times++;
 		}
 		return times % 2;

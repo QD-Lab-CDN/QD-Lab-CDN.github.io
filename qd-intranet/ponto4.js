@@ -149,7 +149,7 @@ $(document).ready(function() {
 					'font-style': 'italic',
 					'text-align': 'center',
 					'background': '#ffe082'
-				}).attr('title', 'Esta é apenas uma informação de sugestão do horário ideal de saída para que você fique com o Banco zerado.');
+				}).attr('title', 'Esta \u00e9 apenas uma informa\u00e7\u00e3o de sugest\u00e3o do hor\u00e1rio ideal de sa\u00edda para que voc\u00ea fique com o Banco zerado.');
 				break;
 			}
 		}

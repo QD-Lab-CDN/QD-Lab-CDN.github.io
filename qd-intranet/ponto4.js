@@ -189,5 +189,5 @@ $(document).ready(function() {
 		}
 	}
 
-	calculateFinalTime();
+	// calculateFinalTime();
 });

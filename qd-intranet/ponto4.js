@@ -104,25 +104,58 @@ $(document).ready(function() {
 		__doPostBack('ctl00$ContentPlaceHolder1$lnkColunasSelecionadasOK','');
 	}
 
-	function operateTimes(lastEnt, saldo, isSum) {
-		var hora, minuto;
-		if(isSum) {
-			hora = parseInt(lastEnt.split(':')[0]) + parseInt(saldo.split(':')[0]);
-			minuto = parseInt(lastEnt.split(':')[1]) + parseInt(saldo.split(':')[1]);
-		} else {
-			hora = parseInt(lastEnt.split(':')[0]) - parseInt(saldo.split(':')[0]);
-			minuto = parseInt(lastEnt.split(':')[1]) - parseInt(saldo.split(':')[1]);
-		}
+	function timeDurationCalc(start, end) {
+		start = start.split(":");
+		end = end.split(":");
+		var startDate = new Date(0, 0, 0, start[0], start[1], 0);
+		var endDate = new Date(0, 0, 0, end[0], end[1], 0);
+		var diff = endDate.getTime() - startDate.getTime();
+		var hours = Math.floor(diff / 1000 / 60 / 60);
+		diff -= hours * 1000 * 60 * 60;
+		var minutes = Math.floor(diff / 1000 / 60);
 		
-		if(minuto > 60) {
-			minuto = minuto-60;
-			hora++;
+		return (hours < 9 ? "0" : "") + hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+	}
+
+	// http://www.easysurf.cc/tmadd.htm
+	function timeCalculator(timeA, timeB, isSum) {
+		timeA = timeA.split(":");
+		timeB = timeB.split(":");
+	
+		var h1 = parseFloat(timeA[0]);
+		var m1 = parseFloat( (timeA[0].indexOf('-')>-1? '-': '') + timeA[1]);
+		var h2 = parseFloat(timeB[0]);
+		var m2 = parseFloat( (timeB[0].indexOf('-')>-1? '-': '') + timeB[1]);
+		
+		var t1, t2, t3, t4, t5;
+		t1 = (h1 * 60) + m1;
+		t2 = (h2 * 60) + m2;
+		if (!isSum)
+			t3 = t1 - t2;
+		else
+			t3 = t1 + t2;
+	   
+		if (t3 < 0) {
+			t4 = Math.ceil(t3 / 60);
+			t5 = t3 - (t4 * 60);
+			t5 = Math.abs(t5);
+			if (t4 == 0)
+				t4 = "-" + t4;
+		}
+		else {
+			t4 = Math.floor(t3 / 60);
+			t5 = t3 - (t4 * 60);
 		}
 
-		if(minuto < 10)
-			minuto = '0' + minuto;
-
-		return hora +':'+ minuto;
+		return pad(t4) + ":" + pad(t5);
+	}
+	function pad(n) {
+		var ns = n.toString();
+		var signal = (ns.match(/[\-\+]/i) || ['']).pop();
+		if (ns.replace(signal, "").length == 1)
+			return signal + "0" + ns.replace(signal, "");
+		else
+			return n;
 	}
 
 	function isEvenTimes(day) {
@@ -133,8 +166,6 @@ $(document).ready(function() {
 			if(day['saí._' + i])
 				times++;
 		}
-		console.log(day);
-		console.log(times);
 		return times % 2;
 	}
 
@@ -165,27 +196,45 @@ $(document).ready(function() {
 		checkNecessaryColumns(necessaryColumns);
 
 		var data = deleteEmptyRows(tableToJson($('table.GridListagem')[0]));
-		var saldo = data[data.length-1]['bsaldo'];
-		var signal = saldo.charAt(0);
-		saldo =  saldo.slice(1);
-		var lastDay = data.length-1;
+		
 		// Verifica se está somente faltanto o horário de saída
-		if(isEvenTimes(data[data.length-1])) {
-			var saldoDay = '00:00';
-			var lastEnt = '09:00';
-			for(n=1; n<6; n++) {
-				if(data[lastDay]['ent._' + n]) {
-					lastEnt = data[lastDay]['ent._' + n];
-					if(data[lastDay]['saí._' + n]) {
-						lastEnt = data[lastDay]['saí._' + n];
-						saldoDay = operateTimes(saldoDay, operateTimes(data[lastDay]['saí._' + n], data[lastDay]['ent._' + n], false), true);
-					}
+		var lastDay = data.length-1;
+		if(isEvenTimes(data[lastDay])) {
+			// Agora eu calculo o saldo do dia atual
+			var dayBalance = '00:00';
+			var entryTime;
+			var exitTime;
+			var tempBalance;
+			for(n=1; n<=5; n++) {
+				entryTime = data[lastDay]['ent._' + n];
+				exitTime = data[lastDay]['saí._' + n];
+				if(entryTime && exitTime) {
+					tempBalance = timeCalculator(exitTime, entryTime);
+					dayBalance = timeCalculator(dayBalance, tempBalance, true);
 				}
-			}	
-			if(signal == '+')
-				saldo = operateTimes(operateTimes('08:00', saldoDay, false), saldo, false);
-			 
-			printFinalTime(operateTimes(lastEnt, saldo, true), lastDay+2);
+				else
+					break;
+			}
+
+			// Saldo do dia até o momento
+			var balance = '-05:00';
+			var balance = data[lastDay-1]['bsaldo'];
+			var lastEntry = data[lastDay]['ent._' + n];
+
+			// Junto o saldo do dia com o saldo anterior
+			var compTime = timeCalculator(balance, dayBalance, true);
+			// Retiro as 08:00 hrs de carga horária do dia
+			compTime = timeCalculator('-08:00', compTime, true);
+			// Agora eu pego o último horário de "entrada" e cálculo qual o horário de saída p/ ficar com o banco zerado
+			var newExitTime = timeCalculator(lastEntry, compTime);
+
+			// printFinalTime(newExitTime.replace('-', ''), lastDay+2);
+			if((timeCalculator(newExitTime, lastEntry)).indexOf('-')>-1){
+				var newCompTime = timeCalculator((new Date()).toLocaleTimeString().replace(/\:[0-9]+$/, ''), lastEntry);
+				printFinalTime('Passou do horário em +' + timeCalculator(compTime, newCompTime, true) + ' hrs', lastDay+2);
+			}
+			else
+				printFinalTime(newExitTime, lastDay+2);
 		}
 	}
 
